@@ -36,6 +36,17 @@ public class LivroDAO {
             throw new Exception(ex);
         }
     }
+    
+    public void saveAutorLivro(Autor autor, Livro livro) throws Exception{
+        String SQL = "INSERT INTO AUTOR_LIVRO VALUES (?,?)";
+        try {
+            PreparedStatement p = connection.prepareStatement(SQL);
+            p.setInt(1, livro.getLivro_id());
+            p.setInt(2, autor.getAutor_id());
+        } catch (SQLException ex) {
+            throw new Exception(ex);
+        }
+    }
 
     public void update(Livro livro) throws Exception {
         String SQL = "UPDATE LIVRO SET EDITORA_ID=?,TITULO=?,ANO=?,DESCRICAO=? WHERE LIVRO_ID=?";
@@ -61,6 +72,17 @@ public class LivroDAO {
         } catch (SQLException ex) {
             throw new Exception(ex);
         }
+    }
+    
+    public void deleteAutorLivro(Autor autor, Livro livro) throws Exception{
+        String SQL = "DELETE FROM AUTOR_LIVRO WHERE AUTOR_ID=?";
+        try {
+            PreparedStatement p = connection.prepareStatement(SQL);
+            p.setInt(1, livro.getLivro_id());
+            p.setInt(2, autor.getAutor_id());
+        } catch (SQLException ex) {
+            throw new Exception(ex);
+        }    
     }
 
     public Livro findById(int id) throws Exception{
@@ -95,33 +117,8 @@ public class LivroDAO {
         } catch (SQLException ex) {
            throw new Exception(ex); 
         }
+        objeto.setAutores(findAutoresLivro(objeto.getLivro_id()));
         return objeto;
-    }
-    
-    public List<Autor> Autores() throws Exception {
-        List<Autor> list  = new ArrayList<>();
-        Autor objeto;
-        String SQL = "select al.autor_id, al.livro_id,  a.nome"
-                   + "from autor a"
-                   + "inner join autor_livro al on al.livro_id = a.autor_id";
-        try{
-            PreparedStatement p = connection.prepareStatement(SQL);
-            ResultSet rs = p.executeQuery();
-            while (rs.next()) {
-                // Instancia a classe e informa os valores do BD
-                objeto = new Autor();
-                objeto.setAutor_id(rs.getInt("autor_id"));
-                objeto.setNome(rs.getString("nome"));
-                // Inclui na lista
-                list.add(objeto);
-            }
-            rs.close();
-            p.close();
-        } catch (SQLException ex) {
-            throw new Exception(ex);
-        }
-        // Retorna a lista
-        return list;
     }
     
     public List<Livro> findAll() throws Exception {
@@ -160,6 +157,27 @@ public class LivroDAO {
         }
         // Retorna a lista
         return list;
+    }
+    
+    private List<Autor> findAutoresLivro(int livroId) throws Exception{
+        List<Autor> lista = new ArrayList<>();
+        String SQL = "SELECT AL.AUTOR_ID, A.NOME FROM AUTOR_LIVRO AS AL "
+                   + "WHERE INNER JOIN AUTOR AS A ON A.AUTOR_ID = AL.AUTOR_ID "
+                   + "WHERE LIVRO_ID";
+        try {
+            PreparedStatement p = connection.prepareStatement(SQL);
+            p.setInt(1, livroId);
+            ResultSet rs = p.executeQuery();
+            while (rs.next()){
+                Autor a = new Autor();
+                a.setAutor_id(rs.getInt("autor_id"));
+                a.setNome(rs.getString("nome"));
+                lista.add(a);
+            }
+        } catch (SQLException ex) {
+            throw new Exception(ex);
+        }
+        return null;
     }
     
     public static void main(String[] args) {
