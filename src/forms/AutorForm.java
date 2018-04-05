@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package form;
+package forms;
 
 import dao.AutorDAO;
 import javax.swing.JOptionPane;

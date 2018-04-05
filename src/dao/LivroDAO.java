@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Autor;
 import model.Editora;
 import model.Livro;
 import util.ConnectionJDBC;
@@ -96,7 +97,33 @@ public class LivroDAO {
         }
         return objeto;
     }
-
+    
+    public List<Autor> Autores() throws Exception {
+        List<Autor> list  = new ArrayList<>();
+        Autor objeto;
+        String SQL = "select al.autor_id, al.livro_id,  a.nome"
+                   + "from autor a"
+                   + "inner join autor_livro al on al.livro_id = a.autor_id";
+        try{
+            PreparedStatement p = connection.prepareStatement(SQL);
+            ResultSet rs = p.executeQuery();
+            while (rs.next()) {
+                // Instancia a classe e informa os valores do BD
+                objeto = new Autor();
+                objeto.setAutor_id(rs.getInt("autor_id"));
+                objeto.setNome(rs.getString("nome"));
+                // Inclui na lista
+                list.add(objeto);
+            }
+            rs.close();
+            p.close();
+        } catch (SQLException ex) {
+            throw new Exception(ex);
+        }
+        // Retorna a lista
+        return list;
+    }
+    
     public List<Livro> findAll() throws Exception {
         // Lista para manter os valores do ResultSet
         List<Livro> list = new ArrayList<>();
