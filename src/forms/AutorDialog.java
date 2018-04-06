@@ -142,6 +142,7 @@ public class AutorDialog extends javax.swing.JDialog {
             }
         });
     }
+    
     private void loadTabela(){
         DefaultTableModel model = (DefaultTableModel) tabela.getModel();
         model.setNumRows(0); //Limpar a tabela
@@ -156,9 +157,9 @@ public class AutorDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex);
         }          
     }
+    
     private AutorDAO autorDAO;
     private int autorId;
-
     public int getAutorId() {
         return autorId;
     }

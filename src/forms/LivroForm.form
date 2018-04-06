@@ -65,7 +65,7 @@
                           <Component id="btnSalvar" alignment="1" min="-2" pref="96" max="-2" attributes="0"/>
                           <Component id="jScrollPane3" alignment="1" min="-2" pref="323" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtBuscar" min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="txtAutorId" min="-2" pref="65" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btBuscar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
@@ -88,7 +88,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtLivroID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtAutorId" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btDel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -293,7 +293,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="txtBuscar">
+    <Component class="javax.swing.JTextField" name="txtAutorId">
       <Properties>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -301,13 +301,11 @@
     <Component class="javax.swing.JButton" name="btDel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Del"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btAdd">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAddActionPerformed"/>
