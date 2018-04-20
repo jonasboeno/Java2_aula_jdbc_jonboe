@@ -17,10 +17,10 @@ public class LivroForm extends javax.swing.JFrame {
 
     public LivroForm() {
         initComponents();
-        try{
+        try {
             livroDAO = new LivroDAO();
             editoraDAO = new EditoraDAO();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
@@ -144,8 +144,6 @@ public class LivroForm extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tabelaAutor);
 
-        txtAutorId.setEnabled(false);
-
         btDel.setText("Del");
 
         btAdd.setText("Add");
@@ -251,25 +249,20 @@ public class LivroForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtLivroIDActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-       Livro livro = new Livro();
-       livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
-       livro.setEditora((Editora) cbEditora.getSelectedItem());
-       livro.setTitulo(txtTitulo.getText());
-       livro.setAno(Integer.parseInt(txtAno.getText()));
-       
-       try {
-           if (mode.equals("INS")){
-               livroDAO.save(livro);
-               JOptionPane.showMessageDialog(this,"Salvo com sucesso!");
-           } else if (mode.equals("UPD")){
-               livroDAO.update(livro);
-               JOptionPane.showMessageDialog(this,"Alterado com sucesso!");
-           }
+        Livro livro = new Livro();
+        livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
+        livro.setTitulo(txtTitulo.getText());
+        livro.setEditora((Editora) cbEditora.getSelectedItem());
+        livro.setAno(Integer.parseInt(txtAno.getText()));
+        livro.setDescricao(txtDescricao.getText());
 
-       } catch (Exception ex){
-           JOptionPane.showMessageDialog(this, ex.getMessage());
-       }
-       loadTabela();
+        try {
+            livroDAO.save(livro);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+        limparCampos();
+        loadTabela();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -278,37 +271,44 @@ public class LivroForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
-        String id = tabela.getValueAt(tabela.getSelectedRow(), 0).toString();      
+        String id = tabela.getValueAt(tabela.getSelectedRow(), 0).toString();
         int livro_id = Integer.parseInt(id);
-        
+
         try {
             Livro livro = livroDAO.findById(livro_id);
             txtLivroID.setText("" + livro_id);
             txtTitulo.setText(livro.getTitulo());
             txtAno.setText("" + livro.getAno());
             txtDescricao.setText(livro.getDescricao());
-            //cbEditora.setSelectedItem(livro.getEditora());
+            //cbEditora.setSelectedItem( livro.getEditora() );
             cbEditora.getModel().setSelectedItem(livro.getEditora());
-            
+
             loadTabelaAutores(livro);
-            
+
         } catch (Exception ex) {
+            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tabelaMouseClicked
-    
+
     private void loadTabelaAutores(Livro livro) throws Exception {
         DefaultTableModel model = (DefaultTableModel) tabelaAutor.getModel();
         model.setNumRows(0);
-        try {
-            for (Autor autor : livro.getAutores()) {
-                String[] linha = {"" + autor.getAutor_id(), autor.getNome()};
-                model.addRow(linha);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE,null,ex);
+        for (Autor autor : livro.getAutores()) {
+            String[] linha = {
+                "" + autor.getAutor_id(),
+                autor.getNome()
+            };
+            model.addRow(linha);
         }
     }
     
+    public void limparCampos() {
+        txtLivroID.setText("");
+        txtTitulo.setText("");
+        txtDescricao.setText("");
+        txtAno.setText("");
+    }
+
     private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTituloActionPerformed
@@ -318,13 +318,13 @@ public class LivroForm extends javax.swing.JFrame {
         Livro livro = new Livro();
         autor.setAutor_id(Integer.parseInt(txtAutorId.getText()));
         livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
-        
         try {
             livroDAO.saveAutorLivro(autor, livro);
+
             livro = livroDAO.findById(livro.getLivro_id());
             loadTabelaAutores(livro);
         } catch (Exception ex) {
-            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE,null,ex);
+            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btAddActionPerformed
 
@@ -381,28 +381,29 @@ public class LivroForm extends javax.swing.JFrame {
             }
         });
     }
-    
-     private void loadComboBox() {
+
+    private void loadComboBox() {
         try {
-            DefaultComboBoxModel model = new DefaultComboBoxModel( new Vector( editoraDAO.findAll() ) );
+            DefaultComboBoxModel model
+                    = new DefaultComboBoxModel(new Vector(editoraDAO.findAll()));
             cbEditora.setModel(model);
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     private void loadTabela() {
         DefaultTableModel model = (DefaultTableModel) tabela.getModel();
         model.setNumRows(0);
-        
+
         try {
-            for (Livro livro : livroDAO.findAll()){
+            for (Livro livro : livroDAO.findAll()) {
                 String linha[] = {
-                    ""+livro.getLivro_id(),
+                    String.valueOf(livro.getLivro_id()),
                     livro.getTitulo(),
                     livro.getEditora().getNome(),
-                    ""+livro.getAno()
+                    "" + livro.getAno()
                 };
                 model.addRow(linha);
             }
@@ -410,7 +411,7 @@ public class LivroForm extends javax.swing.JFrame {
             Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private LivroDAO livroDAO;
     private EditoraDAO editoraDAO;
     private String mode = "INS";

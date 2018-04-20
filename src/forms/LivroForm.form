@@ -297,9 +297,6 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="txtAutorId">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btDel">
       <Properties>

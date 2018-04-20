@@ -99,7 +99,22 @@ public class AutorDialog extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         loadTabela();
     }//GEN-LAST:event_formWindowOpened
-
+    private void loadTabela(){
+        DefaultTableModel model = (DefaultTableModel) tabela.getModel();
+        model.setNumRows(0); // Limpar a tabela
+        try {
+            // Buscar a Lista
+            for (Autor autor : autorDAO.findAll() ) {
+                String linha[] = {
+                    "" + autor.getAutor_id(),
+                    autor.getNome()
+                };
+                model.addRow(linha);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AutorDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
     /**
      * @param args the command line arguments
      */
@@ -143,23 +158,9 @@ public class AutorDialog extends javax.swing.JDialog {
         });
     }
     
-    private void loadTabela(){
-        DefaultTableModel model = (DefaultTableModel) tabela.getModel();
-        model.setNumRows(0); //Limpar a tabela
-        //Buscar a Lista
-        try {
-            for (Autor autor : autorDAO.findAll()) {
-                String linha[] = {
-                    "" + autor.getAutor_id(), autor.getNome()};
-                model.addRow(linha);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex);
-        }          
-    }
-    
     private AutorDAO autorDAO;
     private int autorId;
+
     public int getAutorId() {
         return autorId;
     }
