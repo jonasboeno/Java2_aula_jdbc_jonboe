@@ -137,6 +137,11 @@ public class LivroForm extends javax.swing.JFrame {
                 "ID", "Autor"
             }
         ));
+        tabelaAutor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaAutorMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tabelaAutor);
 
         txtAutorId.setEnabled(false);
@@ -336,6 +341,10 @@ public class LivroForm extends javax.swing.JFrame {
     private void txtAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAnoActionPerformed
+
+    private void tabelaAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaAutorMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaAutorMouseClicked
 
     /**
      * @param args the command line arguments
