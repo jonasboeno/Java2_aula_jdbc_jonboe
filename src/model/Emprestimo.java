@@ -1,17 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
-/**
- *
- * @author User
- */
 public class Emprestimo {
+    private int emprestimo_id;
+    private Livro livro_id;
+    private Estudante estudante_id;
+    private Date data_retirada;
+    private Date data_devolucao;
+    private Date data_entrega;
+    private String status;
 
     public int getEmprestimo_id() {
         return emprestimo_id;
@@ -62,18 +60,10 @@ public class Emprestimo {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatus(String status) {
+        this.status = status;
     }
-    private int emprestimo_id;
-    private Livro livro_id;
-    private Estudante estudante_id;
-    private Date data_retirada;
-    private Date data_devolucao;
-    private Date data_entrega;
-    private String Status;
-    
 }
