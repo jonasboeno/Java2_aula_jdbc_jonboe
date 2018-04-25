@@ -1,6 +1,5 @@
 package forms;
 
-import dao.AutorDAO;
 import dao.EditoraDAO;
 import dao.LivroDAO;
 import java.util.Vector;
@@ -17,6 +16,8 @@ public class LivroForm extends javax.swing.JFrame {
 
     public LivroForm() {
         initComponents();
+        txtAutorID.setEnabled(false);
+        
         try {
             livroDAO = new LivroDAO();
             editoraDAO = new EditoraDAO();
@@ -50,10 +51,12 @@ public class LivroForm extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabelaAutor = new javax.swing.JTable();
-        txtAutorId = new javax.swing.JTextField();
+        txtAutorID = new javax.swing.JTextField();
         btDel = new javax.swing.JButton();
         btAdd = new javax.swing.JButton();
         btBuscar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -145,6 +148,11 @@ public class LivroForm extends javax.swing.JFrame {
         jScrollPane3.setViewportView(tabelaAutor);
 
         btDel.setText("Del");
+        btDel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelActionPerformed(evt);
+            }
+        });
 
         btAdd.setText("Add");
         btAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +165,20 @@ public class LivroForm extends javax.swing.JFrame {
         btBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btBuscarActionPerformed(evt);
+            }
+        });
+
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
             }
         });
 
@@ -194,16 +216,21 @@ public class LivroForm extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtAutorID, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btBuscar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btAdd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btDel)))))
+                                .addComponent(btDel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnNovo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(btnRemover)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -214,7 +241,7 @@ public class LivroForm extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(txtLivroID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtAutorID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btDel)
                         .addComponent(btAdd)
                         .addComponent(btBuscar)
@@ -235,7 +262,10 @@ public class LivroForm extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
-                .addComponent(btnSalvar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnRemover)
+                    .addComponent(btnNovo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                 .addContainerGap())
@@ -250,6 +280,7 @@ public class LivroForm extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Livro livro = new Livro();
+        
         livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
         livro.setTitulo(txtTitulo.getText());
         livro.setEditora((Editora) cbEditora.getSelectedItem());
@@ -257,7 +288,12 @@ public class LivroForm extends javax.swing.JFrame {
         livro.setDescricao(txtDescricao.getText());
 
         try {
-            livroDAO.save(livro);
+            if (mode.equals("INS")){
+                livroDAO.save(livro);
+            } else if (mode.equals("UPD")){
+                livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
+                livroDAO.update(livro);
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
@@ -280,10 +316,11 @@ public class LivroForm extends javax.swing.JFrame {
             txtTitulo.setText(livro.getTitulo());
             txtAno.setText("" + livro.getAno());
             txtDescricao.setText(livro.getDescricao());
-            //cbEditora.setSelectedItem( livro.getEditora() );
             cbEditora.getModel().setSelectedItem(livro.getEditora());
 
             loadTabelaAutores(livro);
+            
+            this.mode="UPD";
 
         } catch (Exception ex) {
             Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -307,6 +344,7 @@ public class LivroForm extends javax.swing.JFrame {
         txtTitulo.setText("");
         txtDescricao.setText("");
         txtAno.setText("");
+        this.mode = "INS";
     }
 
     private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
@@ -316,11 +354,10 @@ public class LivroForm extends javax.swing.JFrame {
     private void btAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAddActionPerformed
         Autor autor = new Autor();
         Livro livro = new Livro();
-        autor.setAutor_id(Integer.parseInt(txtAutorId.getText()));
+        autor.setAutor_id(Integer.parseInt(txtAutorID.getText()));
         livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
         try {
             livroDAO.saveAutorLivro(autor, livro);
-
             livro = livroDAO.findById(livro.getLivro_id());
             loadTabelaAutores(livro);
         } catch (Exception ex) {
@@ -331,7 +368,7 @@ public class LivroForm extends javax.swing.JFrame {
     private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
         AutorDialog dialog = new AutorDialog(this, true);
         dialog.setVisible(true);
-        txtAutorId.setText("" + dialog.getAutorId());
+        txtAutorID.setText("" + dialog.getAutorId());
     }//GEN-LAST:event_btBuscarActionPerformed
 
     private void cbEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEditoraActionPerformed
@@ -343,8 +380,47 @@ public class LivroForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtAnoActionPerformed
 
     private void tabelaAutorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaAutorMouseClicked
-        // TODO add your handling code here:
+        int selected = tabelaAutor.getSelectedRow();
+        txtAutorID.setText(tabelaAutor.getValueAt(selected, 0).toString());
     }//GEN-LAST:event_tabelaAutorMouseClicked
+
+    private void btDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelActionPerformed
+        Livro livro = new Livro();
+        
+        livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
+        
+        try{
+            livroDAO.delete(livro);
+            this.mode = "INS";
+            limparCampos();
+            loadTabela();
+        } catch (Exception ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btDelActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        Autor autor = new Autor ();
+        Livro livro = new Livro();
+        
+        autor.setAutor_id(Integer.parseInt(txtAutorID.getText()));
+        livro.setLivro_id(Integer.parseInt(txtLivroID.getText()));
+        try {
+            livroDAO.deleteAutorLivro(autor, livro);
+        } catch (Exception ex) {
+            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try{
+            livro = livroDAO.findById(livro.getLivro_id());
+            loadTabelaAutores(livro);
+        } catch (Exception ex) {
+            Logger.getLogger(LivroForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,6 +495,8 @@ public class LivroForm extends javax.swing.JFrame {
     private javax.swing.JButton btAdd;
     private javax.swing.JButton btBuscar;
     private javax.swing.JButton btDel;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cbEditora;
     private javax.swing.JLabel jLabel1;
@@ -432,7 +510,7 @@ public class LivroForm extends javax.swing.JFrame {
     private javax.swing.JTable tabela;
     private javax.swing.JTable tabelaAutor;
     private javax.swing.JTextField txtAno;
-    private javax.swing.JTextField txtAutorId;
+    private javax.swing.JTextField txtAutorID;
     private javax.swing.JTextArea txtDescricao;
     private javax.swing.JTextField txtLivroID;
     private javax.swing.JTextField txtTitulo;
